@@ -3,8 +3,7 @@
 from datetime import datetime
 from uuid import uuid4
 from models.engine.file_storage import FileStorage
-#from models import storage
-import models
+from models import storage
 
 
 class BaseModel:
@@ -32,8 +31,8 @@ class BaseModel:
     def save(self):
         """Updates `updated_at` with the current datetime."""
         self.updated_at = datetime.utcnow()
-        models.storage.new(self)
-        models.storage.save()
+        storage.new(self)
+        storage.save()
 
     def to_dict(self):
         """Returns a dictionary containing key/values of self.__dict__"""
