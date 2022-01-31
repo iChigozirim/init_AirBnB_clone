@@ -4,7 +4,7 @@ import cmd
 
 
 class HBNBCommand(cmd.Cmd):
-    """Defines the AirBnB command intrepreter.
+    """Defines the AirBnB command interpreter.
     Attributes:
         prompt (str): The command prompt.
     """
