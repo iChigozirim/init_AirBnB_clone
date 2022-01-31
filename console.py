@@ -17,5 +17,10 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         pass
 
+    def do_EOF(self, arg):
+        """On receiving end-of-file signal, exit the program."""
+        return True
+
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
