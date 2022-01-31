@@ -1,9 +1,8 @@
-#!/usr/bin/python3
+#/usr/bin/python3
 """Defines a class Base."""
 from datetime import datetime
 from uuid import uuid4
-from models.engine.file_storage import FileStorage
-from models import storage
+import models
 
 
 class BaseModel:
@@ -15,6 +14,7 @@ class BaseModel:
         self.id = str(uuid4())
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
+        models.storage.new(self)
 
         if kwargs is not None:
             for key, value in kwargs.items():
@@ -26,17 +26,17 @@ class BaseModel:
 
     def __str__(self):
         """Returns print/str representation of the BaseModel instance."""
-        return "[{}] ({}) {}".format(__class__.__name__, self.id, self.__dict__)
+        d = self.__dict__.copy()
+        return "[{}] ({}) {}".format(__class__.__name__, self.id, d)
 
     def save(self):
         """Updates `updated_at` with the current datetime."""
         self.updated_at = datetime.utcnow()
-        storage.new(self)
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """Returns a dictionary containing key/values of self.__dict__"""
-        dictionary = self.__dict__
+        dictionary = self.__dict__.copy()
         dictionary["__class__"] = __class__.__name__
         dictionary["created_at"] = self.created_at.isoformat()
         dictionary["updated_at"] = self.updated_at.isoformat()
