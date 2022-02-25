@@ -15,12 +15,11 @@ class BaseModel:
             *args (any): Unused.
             **kwargs (dict): Key/value pairs of attributes
         """
-
         self.id = str(uuid4())
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
         
-        if kwargs is not None:
+        if len(kwargs) != 0:
             for key, value in kwargs.items():
                 if key != "__class__":
                     if key == "created_at" or key == "updated_at":
