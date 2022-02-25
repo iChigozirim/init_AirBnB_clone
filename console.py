@@ -51,7 +51,7 @@ def validate_args(args, require_id="n", instance=''):
                 print("** no instance found **")
                 return (False)
         except IndexError:
-            print("** instance id is missing **")
+            print("** instance id missing **")
             return (False)
     return (True)
 
