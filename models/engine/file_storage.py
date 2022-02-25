@@ -2,12 +2,17 @@
 """Defines a class FileStorage."""
 import json
 from models.base_model import BaseModel
+from models.user import User
 from os.path import exists
 
 
 class FileStorage:
     """Serializes instances to a JSON file and deserializes JSON
     file to instance.
+
+    Attributes:
+        __file_path (str): The path to JSON file where objects would be saved.
+        __objects (dict): A dictionary of instances.
     """
     __file_path = "file.json"
     __objects = {}
