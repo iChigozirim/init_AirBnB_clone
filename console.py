@@ -3,6 +3,13 @@
 import cmd
 import models
 from models.base_model import BaseModel
+from models.user import User
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.state import State
+from models.review import Review
+
 
 CLASSES = [
     "BaseModel",
@@ -84,34 +91,32 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, class_name):
-        """ Creates a new instance of BaseModel, saves it and prints the id"""
-        commands = parse_line(class_name)
+        """ Creates a new instance, saves it and prints the id"""
+        arg = parse_line(class_name)
 
-        if validate_args(commands) == False:
+        if validate_args(arg) == False:
             return
+        print(eval(arg[0])().id)
+        self.storage.save()
 
-        self.new_obj = BaseModel()
-        self.new_obj.save()
-        print(self.new_obj.id)
-
-    def do_show(self, args):
+    def do_show(self, arg):
         """Prints the string representation of an instance based on the class name and id"""
-        commands = parse_line(args)
+        args = parse_line(arg)
 
-        if validate_args(commands, "y", self) == False:
+        if validate_args(args, "y", self) == False:
             return
-        key = "{}.{}".format(commands[0], commands[1])
+        key = "{}.{}".format(args[0], args[1])
         print(self.storage.all()[key])
         
-    def do_destroy(self, args):
+    def do_destroy(self, arg):
         """Deletes an instance based on the class name and id
         (save the change into the JSON file).
         """
-        commands = parse_line(args)
+        args = parse_line(arg)
 
-        if validate_args(commands, "y", self) == False:
+        if validate_args(args, "y", self) == False:
             return
-        key = "{}.{}".format(commands[0], commands[1])
+        key = "{}.{}".format(args[0], args[1])
         del self.storage.all()[key]
         self.storage.save()
 
@@ -119,40 +124,40 @@ class HBNBCommand(cmd.Cmd):
         """ Prints all string representation of all instances based
         or not on the class name.
         """
-        commands = parse_line(arg)
+        args = parse_line(arg)
         objects = self.storage.all().values()
-        if len(commands) < 1:
+        if len(args) < 1:
             print([str(obj) for obj in objects])
         else:
-            if commands[0] not in CLASSES:
+            if args[0] not in CLASSES:
                 print("** class doesn't exist **")
             else:
                 print([str(obj) for obj in objects
-                if commands[0] in str(obj)])
+                if args[0] in str(obj)])
 
-    def do_update(self, args):
+    def do_update(self, arg):
         """Updates an instance based on the class name and id by adding
         or updating attribute (save the change into the JSON file).
 
         Usage: update <class name> <id> <attribute name> "<attribute value>"
         """
-        commands = parse_line(args)
+        args = parse_line(arg)
 
-        if validate_args(commands, "y", self) == False:
+        if validate_args(args, "y", self) == False:
             return
-        if len(commands) < 3:
+        if len(args) < 3:
             print("** attribute name missing **")
             return
-        if len (commands) < 4:
+        if len (args) < 4:
             print("** value missing **")
             return
 
-        key = "{}.{}".format(commands[0], commands[1])
+        key = "{}.{}".format(args[0], args[1])
         obj = self.storage.all()[key]
         try:
-            obj.commands[2] = commands[3]
+            obj.args[2] = args[3]
         except AttributeError:
-            setattr(obj, commands[2], commands[3])
+            setattr(obj, args[2], args[3])
         self.storage.save()
 
 
