@@ -6,7 +6,11 @@ from models.base_model import BaseModel
 
 CLASSES = [
     "BaseModel",
-    "User"
+    "User",
+    "City",
+    "Amenity",
+    "Place",
+    "Review"
 ]
 
 
