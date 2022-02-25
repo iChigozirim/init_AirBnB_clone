@@ -25,7 +25,7 @@ def validate_args(args, require_id="n", instance=''):
             require_id (str): A string.
                               if it's == "y", the function would validate
                               instance id. Otherwise it wouldn't.
-            instance (class): Class; to access class attributes.
+            instance (class): Class - to access class attributes.
     - If the class name is missing, print ** class name missing **
     - If the class name doesn’t exist, print ** class doesn't exist **
     - If the id is missing, print ** instance id missing **
@@ -124,7 +124,31 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print([str(obj) for obj in objects
                 if commands[0] in str(obj)])
-        
+
+    def do_update(self, args):
+        """Updates an instance based on the class name and id by adding
+        or updating attribute (save the change into the JSON file).
+
+        Usage: update <class name> <id> <attribute name> "<attribute value>"
+        """
+        commands = parse_line(args)
+
+        if validate_args(commands, "y", self) == False:
+            return
+        if len(commands) < 3:
+            print("** attribute name missing **")
+            return
+        if len (commands) < 4:
+            print("** value missing **")
+            return
+
+        key = "{}.{}".format(commands[0], commands[1])
+        obj = self.storage.all()[key]
+        try:
+            obj.commands[2] = commands[3]
+        except AttributeError:
+            setattr(obj, commands[2], commands[3])
+        self.storage.save()
 
 
 if __name__ == '__main__':
