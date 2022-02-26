@@ -17,6 +17,7 @@ CLASSES = [
     "City",
     "Amenity",
     "Place",
+    "State",
     "Review"
 ]
 
